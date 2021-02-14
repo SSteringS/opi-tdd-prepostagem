@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PrePostagemResquest {
+public class PrePostagemRequest {
 
     private long id;
     private String remetente;

@@ -1,6 +1,10 @@
 package br.com.satyan.tdd.demo.rest;
 
-import br.com.satyan.tdd.demo.model.request.PrePostagemResquest;
+import br.com.satyan.tdd.demo.model.entity.PreVenda;
+import br.com.satyan.tdd.demo.model.request.PrePostagemRequest;
+import br.com.satyan.tdd.demo.service.PrePostagemService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,7 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/prepostagem")
 public class PrePostagemRest {
 
+    @Autowired
+    private PrePostagemService prePostagemService;
 
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping()
     public String teste(){
@@ -17,15 +25,10 @@ public class PrePostagemRest {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PrePostagemResquest criarPrePostagem(){
-        PrePostagemResquest prePostagemResquest = PrePostagemResquest.builder()
-                .id(1l)
-                .codigoObjeto("3021")
-                .destinatario("Satyan Stering Saita")
-                .remetente("Migrely feliz")
-                .pesoAferido("20.30")
-                .build();
-        return prePostagemResquest;
+    public PrePostagemRequest criarPrePostagem(@RequestBody PrePostagemRequest request){
+        PreVenda preVenda = modelMapper.map(request, PreVenda.class);
+        preVenda = prePostagemService.save(preVenda);
+        return modelMapper.map(preVenda, PrePostagemRequest.class);
     }
 
 
